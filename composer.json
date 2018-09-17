@@ -1,0 +1,15 @@
+{
+    "name": "igrejanet/caixa-webservice",
+    "autoload": {
+        "psr-4": {
+            "Boleto\\Caixa\\": "src/"
+        }
+    },
+    "require": {
+        "ext-curl": ">=5.4",
+        "guzzlehttp/guzzle": "^6.0",
+        "jansenfelipe/utils": "^2.0",
+        "phpunit/phpunit": "^7.3",
+        "nesbot/carbon": "^2.1"
+    }
+}

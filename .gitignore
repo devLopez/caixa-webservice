@@ -1,0 +1,3 @@
+xml/*.wsdl
+vendor/*
+.idea/*

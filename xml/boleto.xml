@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ext="http://caixa.gov.br/sibar/manutencao_cobranca_bancaria/boleto/externo"
+                  xmlns:sib="http://caixa.gov.br/sibar">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ext:SERVICO_ENTRADA>
+            <sib:HEADER>
+                <VERSAO>1.0</VERSAO>
+                <AUTENTICACAO>TUIcrNKT1to0FILqUQYEs3HdrZLm3pDsy7+WdE8twvg=</AUTENTICACAO>
+                <USUARIO_SERVICO>SGCBS02P</USUARIO_SERVICO>
+                <OPERACAO>INCLUI_BOLETO</OPERACAO>
+                <SISTEMA_ORIGEM>SIGCB</SISTEMA_ORIGEM>
+                <UNIDADE>1740</UNIDADE>
+                <DATA_HORA>20180917142400</DATA_HORA>
+            </sib:HEADER>
+            <DADOS>
+                <INCLUI_BOLETO>
+                    <CODIGO_BENEFICIARIO>0914212</CODIGO_BENEFICIARIO>
+                    <TITULO>
+                        <NOSSO_NUMERO>14000000000000001</NOSSO_NUMERO>
+                        <NUMERO_DOCUMENTO>TESTE001</NUMERO_DOCUMENTO>
+                        <DATA_VENCIMENTO>2018-09-20</DATA_VENCIMENTO>
+                        <VALOR>100.00</VALOR>
+                        <TIPO_ESPECIE>02</TIPO_ESPECIE>
+                        <FLAG_ACEITE>N</FLAG_ACEITE>
+                        <DATA_EMISSAO>2018-09-17</DATA_EMISSAO>
+                        <JUROS_MORA>
+                            <TIPO>ISENTO</TIPO>
+                            <VALOR>0.00</VALOR>
+                        </JUROS_MORA>
+                        <VALOR_ABATIMENTO>0.00</VALOR_ABATIMENTO>
+                        <POS_VENCIMENTO>
+                            <ACAO>DEVOLVER</ACAO>
+                            <NUMERO_DIAS>999</NUMERO_DIAS>
+                        </POS_VENCIMENTO>
+                        <CODIGO_MOEDA>9</CODIGO_MOEDA>
+                        <PAGADOR>
+                            <CPF>10138414688</CPF>
+                            <NOME>MATHEUS LOPES SANTOS</NOME>
+                            <ENDERECO>
+                                <LOGRADOURO>RUA DOS JESUITAS, 88</LOGRADOURO>
+                                <BAIRRO>NOSSA SENHORA DAS GRACAS</BAIRRO>
+                                <CIDADE>MONTES CLAROS</CIDADE>
+                                <UF>UF</UF>
+                                <CEP>39403036</CEP>
+                            </ENDERECO>
+                        </PAGADOR>
+                        <MULTA>
+                        </MULTA>
+                        <DESCONTOS>
+                        </DESCONTOS>
+                        <FICHA_COMPENSACAO>
+                            <MENSAGENS>
+                                <MENSAGEM>TESTE DE INCLUSAO WEBSERVICE 1</MENSAGEM>
+                                <MENSAGEM>TESTE DE INCLUSAO WEBSERVICE 2</MENSAGEM>
+                            </MENSAGENS>
+                        </FICHA_COMPENSACAO>
+                        <RECIBO_PAGADOR>
+                            <MENSAGENS>
+                                <MENSAGEM>TESTE DE INCLUSAO WS MSG PAG 1</MENSAGEM>
+                                <MENSAGEM>TESTE DE INCLUSAO WS MSG PAG 2</MENSAGEM>
+                                <MENSAGEM>TESTE DE INCLUSAO WS MSG PAG 3</MENSAGEM>
+                                <MENSAGEM>TESTE DE INCLUSAO WS MSG PAG 4</MENSAGEM>
+                            </MENSAGENS>
+                        </RECIBO_PAGADOR>
+                        <PAGAMENTO>
+                            <QUANTIDADE_PERMITIDA>1</QUANTIDADE_PERMITIDA>
+                            <TIPO>NAO_ACEITA_VALOR_DIVERGENTE</TIPO>
+                        </PAGAMENTO>
+                    </TITULO>
+                </INCLUI_BOLETO>
+            </DADOS>
+        </ext:SERVICO_ENTRADA>
+    </soapenv:Body>
+</soapenv:Envelope>
