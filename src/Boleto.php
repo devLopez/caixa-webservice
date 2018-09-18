@@ -79,14 +79,14 @@ class Boleto implements BoletoInterface
     protected $abatimento = 0.00;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $aposVencimento;
+    protected $aposVencimento = null;
 
     /**
-     * @var int
+     * @var int|null
      */
-    protected $diasAposVencimento;
+    protected $diasAposVencimento = null;
 
     /**
      * @var int
@@ -220,7 +220,7 @@ class Boleto implements BoletoInterface
      */
     public function getValor()
     {
-        return $this->valor;
+        return number_format($this->valor, 2, '.', '');
     }
 
     /**
@@ -300,7 +300,7 @@ class Boleto implements BoletoInterface
      */
     public function getValorJuros()
     {
-        return $this->valorJuros;
+        return number_format($this->valorJuros, 2, '.', '');
     }
 
     /**
@@ -316,7 +316,7 @@ class Boleto implements BoletoInterface
      */
     public function getAbatimento()
     {
-        return $this->abatimento;
+        return number_format($this->abatimento, 2, '.', '');
     }
 
     /**
@@ -338,7 +338,7 @@ class Boleto implements BoletoInterface
     /**
      * @param   string  $aposVencimento
      */
-    public function setAposVencimento($aposVencimento)
+    public function setAposVencimento($aposVencimento = null)
     {
         $this->aposVencimento = $aposVencimento;
     }
@@ -354,7 +354,7 @@ class Boleto implements BoletoInterface
     /**
      * @param   int  $diasAposVencimento
      */
-    public function setDiasAposVencimento($diasAposVencimento)
+    public function setDiasAposVencimento($diasAposVencimento = null)
     {
         $this->diasAposVencimento = $diasAposVencimento;
     }
@@ -456,10 +456,12 @@ class Boleto implements BoletoInterface
      */
     public function geraHashAutenticacao()
     {
+        $valor = number_format($this->valor, 2, '', '');
+
         $convenio       = $this->convenio;
         $nossoNumero    = $this->nossoNumero;
         $dataVencimento = $this->dataVencimento->format('dmY');
-        $valor          = sprintf('%015d', preg_replace('/[^0-9]/', '', $this->valor));
+        $valor          = str_pad($valor, 15, 0, 0);//sprintf('%015d', preg_replace('/[^0-9]/', '', $this->valor));
         $cnpj           = sprintf('%014d', $this->cnpjBeneficiario);
 
         $raw = preg_replace('/[^A-Za-z0-9]/', '',$convenio . $nossoNumero . $dataVencimento . $valor . $cnpj);

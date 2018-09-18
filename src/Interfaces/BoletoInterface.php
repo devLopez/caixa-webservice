@@ -60,11 +60,11 @@ interface BoletoInterface
 
     public function getAbatimento();
 
-    public function setAposVencimento($aposVencimento);
+    public function setAposVencimento($aposVencimento = null);
 
     public function getAposVencimento();
 
-    public function setDiasAposVencimento($diasAposVencimento);
+    public function setDiasAposVencimento($diasAposVencimento = null);
 
     public function getDiasAposVencimento();
 
