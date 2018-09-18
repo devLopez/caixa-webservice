@@ -81,12 +81,12 @@ class Boleto implements BoletoInterface
     /**
      * @var string|null
      */
-    protected $aposVencimento = null;
+    protected $aposVencimento;
 
     /**
      * @var int|null
      */
-    protected $diasAposVencimento = null;
+    protected $diasAposVencimento = 1;
 
     /**
      * @var int
@@ -338,7 +338,7 @@ class Boleto implements BoletoInterface
     /**
      * @param   string  $aposVencimento
      */
-    public function setAposVencimento($aposVencimento = null)
+    public function setAposVencimento($aposVencimento)
     {
         $this->aposVencimento = $aposVencimento;
     }
@@ -354,7 +354,7 @@ class Boleto implements BoletoInterface
     /**
      * @param   int  $diasAposVencimento
      */
-    public function setDiasAposVencimento($diasAposVencimento = null)
+    public function setDiasAposVencimento($diasAposVencimento)
     {
         $this->diasAposVencimento = $diasAposVencimento;
     }
