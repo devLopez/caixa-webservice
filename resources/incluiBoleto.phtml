@@ -1,0 +1,84 @@
+<?= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" ?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ext="http://caixa.gov.br/sibar/manutencao_cobranca_bancaria/boleto/externo"
+                  xmlns:sib="http://caixa.gov.br/sibar">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ext:SERVICO_ENTRADA>
+            <sib:HEADER>
+                <VERSAO>1.0</VERSAO>
+                <AUTENTICACAO><?= $hash ?></AUTENTICACAO>
+                <USUARIO_SERVICO><?= $usuarioServico ?></USUARIO_SERVICO>
+                <OPERACAO><?= $operacao ?></OPERACAO>
+                <SISTEMA_ORIGEM><?= $sistemaOrigem ?></SISTEMA_ORIGEM>
+                <UNIDADE><?= $unidade ?></UNIDADE>
+                <DATA_HORA><?= \Carbon\Carbon::now('America/Sao_Paulo')->format('YmdHis') ?></DATA_HORA>
+            </sib:HEADER>
+            <DADOS>
+                <INCLUI_BOLETO>
+                    <CODIGO_BENEFICIARIO><?= $boleto->getConvenio() ?></CODIGO_BENEFICIARIO>
+                    <TITULO>
+                        <NOSSO_NUMERO><?= $boleto->getNossoNumero() ?></NOSSO_NUMERO>
+                        <NUMERO_DOCUMENTO><?= $boleto->getNumeroDocumento() ?></NUMERO_DOCUMENTO>
+                        <DATA_VENCIMENTO><?= $boleto->getDataVencimento()->format('Y-m-d') ?></DATA_VENCIMENTO>
+                        <VALOR><?= $boleto->getValor() ?></VALOR>
+                        <TIPO_ESPECIE><?= $boleto->getTipoEspecie() ?></TIPO_ESPECIE>
+                        <FLAG_ACEITE><?= $boleto->getAceite() ?></FLAG_ACEITE>
+                        <DATA_EMISSAO>2018-09-17</DATA_EMISSAO>
+                        <JUROS_MORA>
+                            <TIPO><?= $boleto->getJurosMora() ?></TIPO>
+                            <VALOR><?= $boleto->getValorJuros() ?></VALOR>
+                        </JUROS_MORA>
+                        <VALOR_ABATIMENTO><?= $boleto->getAbatimento() ?></VALOR_ABATIMENTO>
+                        <POS_VENCIMENTO>
+                            <ACAO><?= $boleto->getAposVencimento() ?></ACAO>
+                            <NUMERO_DIAS><?= $boleto->getDiasAposVencimento() ?></NUMERO_DIAS>
+                        </POS_VENCIMENTO>
+                        <CODIGO_MOEDA><?= $boleto->getCodigoMoeda() ?></CODIGO_MOEDA>
+                        <PAGADOR>
+                            <CPF><?= $pagador->getDocumento() ?></CPF>
+                            <NOME><?= $pagador->getNome() ?></NOME>
+
+                            <?php if ( $boleto->getAposVencimento() == 'PROTESTAR' ) : ?>
+                            <ENDERECO>
+                                <LOGRADOURO><?= $pagador->getLogradouro() ?></LOGRADOURO>
+                                <BAIRRO><?= $pagador->getBairro() ?></BAIRRO>
+                                <CIDADE><?= $pagador->getCidade() ?></CIDADE>
+                                <UF><?= $pagador->getUf() ?></UF>
+                                <CEP><?= $pagador->getCep() ?></CEP>
+                            </ENDERECO>
+                            <?php endif ?>
+
+                        </PAGADOR>
+                        <MULTA>
+                        </MULTA>
+                        <DESCONTOS>
+                        </DESCONTOS>
+                        <FICHA_COMPENSACAO>
+                            <?php if ( $boleto->hasFichaCompensacao() ) : ?>
+                            <MENSAGENS>
+                                <?php foreach ($boleto->getFichaCompensacao() as $mensagem) :?>
+                                <MENSAGEM><?= $mensagem ?></MENSAGEM>
+                                <?php endforeach ?>
+                            </MENSAGENS>
+                            <?php endif ?>
+                        </FICHA_COMPENSACAO>
+                        <RECIBO_PAGADOR>
+                            <?php if ( $boleto->hasReciboPagador() ) : ?>
+                            <MENSAGENS>
+                                <?php foreach ( $boleto->getReciboPagador() as $mensagem ) : ?>
+                                <MENSAGEM><?= $mensagem ?></MENSAGEM>
+                                <?php endforeach ?>
+                            </MENSAGENS>
+                            <?php endif ?>
+                        </RECIBO_PAGADOR>
+                        <PAGAMENTO>
+                            <QUANTIDADE_PERMITIDA>1</QUANTIDADE_PERMITIDA>
+                            <TIPO>NAO_ACEITA_VALOR_DIVERGENTE</TIPO>
+                        </PAGAMENTO>
+                    </TITULO>
+                </INCLUI_BOLETO>
+            </DADOS>
+        </ext:SERVICO_ENTRADA>
+    </soapenv:Body>
+</soapenv:Envelope>
