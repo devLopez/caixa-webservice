@@ -30,10 +30,14 @@
                             <VALOR><?= $boleto->getValorJuros() ?></VALOR>
                         </JUROS_MORA>
                         <VALOR_ABATIMENTO><?= $boleto->getAbatimento() ?></VALOR_ABATIMENTO>
-                        <POS_VENCIMENTO>
-                            <ACAO><?= $boleto->getAposVencimento() ?></ACAO>
-                            <NUMERO_DIAS><?= $boleto->getDiasAposVencimento() ?></NUMERO_DIAS>
-                        </POS_VENCIMENTO>
+
+                        <?php if ( ! is_null($boleto->getAposVencimento()) ) : ?>
+                            <POS_VENCIMENTO>
+                                <ACAO><?= $boleto->getAposVencimento() ?></ACAO>
+                                <NUMERO_DIAS><?= $boleto->getDiasAposVencimento() ?></NUMERO_DIAS>
+                            </POS_VENCIMENTO>
+                        <?php endif ?>
+
                         <CODIGO_MOEDA><?= $boleto->getCodigoMoeda() ?></CODIGO_MOEDA>
                         <PAGADOR>
                             <CPF><?= $pagador->getDocumento() ?></CPF>
@@ -50,14 +54,10 @@
                             <?php endif ?>
 
                         </PAGADOR>
-                        <MULTA>
-                        </MULTA>
-                        <DESCONTOS>
-                        </DESCONTOS>
                         <FICHA_COMPENSACAO>
                             <?php if ( $boleto->hasFichaCompensacao() ) : ?>
                             <MENSAGENS>
-                                <?php foreach ($boleto->getFichaCompensacao() as $mensagem) :?>
+                                <?php foreach ( $boleto->getFichaCompensacao() as $mensagem ) :?>
                                 <MENSAGEM><?= $mensagem ?></MENSAGEM>
                                 <?php endforeach ?>
                             </MENSAGENS>
@@ -72,10 +72,6 @@
                             </MENSAGENS>
                             <?php endif ?>
                         </RECIBO_PAGADOR>
-                        <PAGAMENTO>
-                            <QUANTIDADE_PERMITIDA>1</QUANTIDADE_PERMITIDA>
-                            <TIPO>NAO_ACEITA_VALOR_DIVERGENTE</TIPO>
-                        </PAGAMENTO>
                     </TITULO>
                 </INCLUI_BOLETO>
             </DADOS>
