@@ -18,6 +18,10 @@ interface BoletoInterface
 
     public function getConvenio();
 
+    public function setCNPJBeneficiario($cnpj);
+
+    public function getCNPJBeneficiario();
+
     public function setNossoNumero($nossoNumero);
 
     public function getNossoNumero();
@@ -77,4 +81,10 @@ interface BoletoInterface
     public function setReciboPagador($mensagem);
 
     public function getReciboPagador();
+
+    public function geraHashAutenticacao();
+
+    public function hasFichaCompensacao();
+
+    public function hasReciboPagador();
 }

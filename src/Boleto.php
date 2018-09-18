@@ -6,6 +6,7 @@ use Boleto\Caixa\Interfaces\BoletoInterface;
 use Carbon\Carbon;
 use Boleto\Caixa\Interfaces\AgenteInterface as Agente;
 use InvalidArgumentException;
+use JansenFelipe\Utils\Utils;
 
 /**
  * Boleto
@@ -21,6 +22,11 @@ class Boleto implements BoletoInterface
      * @var string
      */
     protected $convenio;
+
+    /**
+     * @var string
+     */
+    protected $cnpjBeneficiario;
 
     /**
      * @var string
@@ -104,13 +110,33 @@ class Boleto implements BoletoInterface
 
     /**
      * @param   string  $convenio
+     * @param   string  $cnpjBeneficiario
      * @param   Agente  $pagador
      * @param   array  $opcoes
      */
-    public function __construct($convenio, Agente $pagador, array $opcoes = [])
+    public function __construct($convenio, $cnpjBeneficiario, Agente $pagador, array $opcoes = [])
     {
         $this->setConvenio($convenio);
         $this->setPagador($pagador);
+        $this->setCNPJBeneficiario($cnpjBeneficiario);
+
+        if ( count($opcoes) > 0 ) {
+            $this->bootOpcoes($opcoes);
+        }
+    }
+
+    /**
+     * @param   array  $opcoes
+     */
+    private function bootOpcoes(array $opcoes)
+    {
+        foreach ( $opcoes as $metodo => $valor ) {
+            $metodo = 'set' . ucwords($metodo);
+
+            if ( method_exists($this, $metodo) ) {
+                $this->$metodo($valor);
+            }
+        }
     }
 
     /**
@@ -126,7 +152,35 @@ class Boleto implements BoletoInterface
      */
     public function setConvenio($convenio)
     {
-        $this->convenio = $convenio;
+        $this->convenio = str_pad($convenio, 7, 0, STR_PAD_LEFT);
+    }
+
+    /**
+     * @param   string  $cnpj
+     */
+    public function setCNPJBeneficiario($cnpj)
+    {
+        $cnpj = Utils::unmask($cnpj);
+
+        if ( strlen($cnpj) == 14 ) {
+            if ( ! Utils::isCnpj($cnpj) ) {
+                throw new InvalidArgumentException('O CNPJ do beneficiário é inválido');
+            }
+        } else if ( strlen($cnpj) == 11 ) {
+            if ( ! Utils::isCpf($cnpj) ) {
+                throw new InvalidArgumentException('O CPF do beneficiário é inválido');
+            }
+        }
+
+        $this->cnpjBeneficiario = $cnpj;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCNPJBeneficiario()
+    {
+        return $this->cnpjBeneficiario;
     }
 
     /**
@@ -318,11 +372,17 @@ class Boleto implements BoletoInterface
      */
     public function setFichaCompensacao($mensagem)
     {
-        if ( strlen($mensagem) > 40 ) {
-            throw new InvalidArgumentException('A mensagem deve ter no máximo 40 caracteres');
-        }
+        if ( is_array($mensagem) ) {
+            foreach ($mensagem as $item) {
+                $this->setFichaCompensacao($item);
+            }
+        } else {
+            if ( strlen($mensagem) > 40 ) {
+                throw new InvalidArgumentException('A mensagem deve ter no máximo 40 caracteres');
+            }
 
-        array_push($this->fichaCompensacao, $mensagem);
+            array_push($this->fichaCompensacao, $mensagem);
+        }
     }
 
     /**
@@ -338,11 +398,17 @@ class Boleto implements BoletoInterface
      */
     public function setReciboPagador($mensagem)
     {
-        if ( strlen($mensagem) > 40 ) {
-            throw new InvalidArgumentException('A mensagem deve ter no máximo 40 caracteres');
-        }
+        if ( is_array($mensagem) ) {
+            foreach ($mensagem as $item) {
+                $this->setReciboPagador($item);
+            }
+        } else {
+            if ( strlen($mensagem) > 40 ) {
+                throw new InvalidArgumentException('A mensagem deve ter no máximo 40 caracteres');
+            }
 
-        array_push($this->reciboPagador, $mensagem);
+            array_push($this->reciboPagador, $mensagem);
+        }
     }
 
     /**
@@ -383,5 +449,37 @@ class Boleto implements BoletoInterface
     public function getCodigoMoeda()
     {
         return $this->codigoMoeda;
+    }
+
+    /**
+     * @return  string
+     */
+    public function geraHashAutenticacao()
+    {
+        $convenio       = $this->convenio;
+        $nossoNumero    = $this->nossoNumero;
+        $dataVencimento = $this->dataVencimento->format('dmY');
+        $valor          = sprintf('%015d', preg_replace('/[^0-9]/', '', $this->valor));
+        $cnpj           = sprintf('%014d', $this->cnpjBeneficiario);
+
+        $raw = preg_replace('/[^A-Za-z0-9]/', '',$convenio . $nossoNumero . $dataVencimento . $valor . $cnpj);
+
+        return base64_encode(hash('sha256', $raw, true));
+    }
+
+    /**
+     * @return  bool
+     */
+    public function hasFichaCompensacao()
+    {
+        return ( count($this->fichaCompensacao) > 0 ) ? true : false;
+    }
+
+    /**
+     * @return  bool
+     */
+    public function hasReciboPagador()
+    {
+        return ( count($this->reciboPagador) > 0 ) ? true : false;
     }
 }
