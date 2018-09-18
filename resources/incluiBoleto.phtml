@@ -31,12 +31,10 @@
                         </JUROS_MORA>
                         <VALOR_ABATIMENTO><?= $boleto->getAbatimento() ?></VALOR_ABATIMENTO>
 
-                        <?php if ( ! is_null($boleto->getAposVencimento()) ) : ?>
-                            <POS_VENCIMENTO>
-                                <ACAO><?= $boleto->getAposVencimento() ?></ACAO>
-                                <NUMERO_DIAS><?= $boleto->getDiasAposVencimento() ?></NUMERO_DIAS>
-                            </POS_VENCIMENTO>
-                        <?php endif ?>
+                        <POS_VENCIMENTO>
+                            <ACAO><?= $boleto->getAposVencimento() ?></ACAO>
+                            <NUMERO_DIAS><?= $boleto->getDiasAposVencimento() ?></NUMERO_DIAS>
+                        </POS_VENCIMENTO>
 
                         <CODIGO_MOEDA><?= $boleto->getCodigoMoeda() ?></CODIGO_MOEDA>
                         <PAGADOR>

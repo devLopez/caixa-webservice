@@ -114,19 +114,6 @@ class WebService
         ]);
 
         $xml    = $response->getBody()->getContents();
-        $data   = XMLParser::parseFromRetorno($xml);
-
-        if ( $data->CONTROLE_NEGOCIAL->COD_RETORNO == 1 ) {
-            throw new Exception($data->CONTROLE_NEGOCIAL->MENSAGENS->RETORNO);
-        } else {
-            $boleto = new \stdClass();
-
-            $boleto->codigoBarras   = $data->INCLUI_BOLETO->CODIGO_BARRAS;
-            $boleto->linhaDigitavel = $data->INCLUI_BOLETO->LINHA_DIGITAVEL;
-            $boleto->nossoNumero    = $data->INCLUI_BOLETO->NOSSO_NUMERO;
-            $boleto->urlBoleto      = $data->INCLUI_BOLETO->URL;
-
-            return $boleto;
-        }
+        return XMLParser::parseFromRetorno($xml);
     }
 }

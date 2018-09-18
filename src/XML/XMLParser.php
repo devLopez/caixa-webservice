@@ -2,6 +2,7 @@
 
 namespace Boleto\Caixa\XML;
 
+use Boleto\Caixa\Cobranca;
 use Exception;
 use SimpleXMLElement;
 
@@ -17,7 +18,7 @@ class XMLParser
 {
     /**
      * @param   string  $xml
-     * @return  \stdClass
+     * @return  Cobranca
      * @throws  Exception
      */
     public static function parseFromRetorno($xml)
@@ -32,19 +33,26 @@ class XMLParser
 
         $parsed = new SimpleXMLElement($clean_xml);
 
-        $dados = $parsed->Body->SERVICO_SAIDA->DADOS;
+        $dados  = $parsed->Body->SERVICO_SAIDA->DADOS;
 
-        if ( $dados->CONTROLE_NEGOCIAL->COD_RETORNO == 1 ) {
+        $codigoRetorno = $dados->CONTROLE_NEGOCIAL->COD_RETORNO;
+
+        if ( $codigoRetorno == 1 ) {
+
             throw new Exception($dados->CONTROLE_NEGOCIAL->MENSAGENS->RETORNO);
+
+        } else if ( $parsed->Body->SERVICO_SAIDA->COD_RETORNO == 'X5' ) {
+
+            throw new Exception($dados->EXCECAO);
+
         } else {
-            $boleto = new \stdClass();
 
-            $boleto->codigoBarras   = $dados->INCLUI_BOLETO->CODIGO_BARRAS[0];
-            $boleto->linhaDigitavel = $dados->INCLUI_BOLETO->LINHA_DIGITAVEL[0];
-            $boleto->nossoNumero    = $dados->INCLUI_BOLETO->NOSSO_NUMERO[0];
-            $boleto->urlBoleto      = $dados->INCLUI_BOLETO->URL[0];
+            $barras         = (string) $dados->INCLUI_BOLETO->CODIGO_BARRAS;
+            $linhaDigitavel = (string) $dados->INCLUI_BOLETO->LINHA_DIGITAVEL;
+            $nossoNumero    = (string) $dados->INCLUI_BOLETO->NOSSO_NUMERO;
+            $url            = (string) $dados->INCLUI_BOLETO->URL;
 
-            return $boleto;
+            return new Cobranca($barras, $linhaDigitavel, $nossoNumero, $url);
         }
     }
 }

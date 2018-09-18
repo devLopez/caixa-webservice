@@ -15,5 +15,8 @@
     </testsuites>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="CONVENIO" value="914212"/>
+        <env name="CNPJ" value="18414599000175" />
+        <env name="UNIDADE" value="1740" />
     </php>
 </phpunit>
