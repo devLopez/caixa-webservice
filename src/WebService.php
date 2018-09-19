@@ -91,7 +91,7 @@ class WebService
     }
 
     /**
-     * @return  string
+     * @return  \Boleto\Caixa\Retorno\Cobranca
      * @throws  Exception
      */
     public function geraBoleto()
@@ -109,7 +109,7 @@ class WebService
     }
 
     /**
-     * @return  string
+     * @return  \Boleto\Caixa\Retorno\Cobranca
      * @throws  Exception
      */
     public function consultaBoleto()
@@ -122,15 +122,13 @@ class WebService
 
         $xml = XmlCreator::create(__DIR__ . '/../resources/consulta_boleto.phtml', $data);
 
-        return $xml;
-
         return $this->performRequest($operacao, $xml);
     }
 
     /**
      * @param   string  $method
      * @param   string  $xml
-     * @return  string
+     * @return  \Boleto\Caixa\Retorno\Cobranca
      * @throws  Exception
      */
     private function performRequest($method, $xml)
