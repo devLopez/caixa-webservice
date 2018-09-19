@@ -111,14 +111,15 @@ class Boleto implements BoletoInterface
     /**
      * @param   string  $convenio
      * @param   string  $cnpjBeneficiario
-     * @param   Agente  $pagador
+     * @param   Agente|null  $pagador
      * @param   array  $opcoes
      */
-    public function __construct($convenio, $cnpjBeneficiario, Agente $pagador, array $opcoes = [])
+    public function __construct($convenio, $cnpjBeneficiario, Agente $pagador = null, array $opcoes = [])
     {
         $this->setConvenio($convenio);
-        $this->setPagador($pagador);
         $this->setCNPJBeneficiario($cnpjBeneficiario);
+
+        $pagador && $this->setPagador($pagador);
 
         if ( count($opcoes) > 0 ) {
             $this->bootOpcoes($opcoes);
@@ -461,7 +462,7 @@ class Boleto implements BoletoInterface
         $convenio       = $this->convenio;
         $nossoNumero    = $this->nossoNumero;
         $dataVencimento = $this->dataVencimento->format('dmY');
-        $valor          = str_pad($valor, 15, 0, 0);//sprintf('%015d', preg_replace('/[^0-9]/', '', $this->valor));
+        $valor          = str_pad($valor, 15, 0, 0);
         $cnpj           = sprintf('%014d', $this->cnpjBeneficiario);
 
         $raw = preg_replace('/[^A-Za-z0-9]/', '',$convenio . $nossoNumero . $dataVencimento . $valor . $cnpj);

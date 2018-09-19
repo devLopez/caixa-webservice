@@ -12,8 +12,8 @@ use Boleto\Caixa\Interfaces\BoletoInterface as Boleto;
  * WebService
  *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
- * @version 1.0.0
- * @since   18/09/2018
+ * @version 1.1.0
+ * @since   19/09/2018
  * @package Boleto\Caixa
  */
 class WebService
@@ -55,14 +55,13 @@ class WebService
 
     /**
      * @param   string|int  $unidade
-     * @param   Client  $client
      * @param   Boleto  $boleto
      */
-    public function __construct($unidade, Client $client, Boleto $boleto)
+    public function __construct($unidade, Boleto $boleto)
     {
         $this->unidade  = $unidade;
 
-        $this->client   = $client;
+        $this->client   = new Client();
         $this->boleto   = $boleto;
 
         $this->setHashAutenticacao($boleto->geraHashAutenticacao());

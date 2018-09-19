@@ -1,10 +1,10 @@
 <?= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" ?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-                  xmlns:ext="http://caixa.gov.br/sibar/consulta_cobranca_bancaria/boleto/externo"
+                  xmlns:ext="http://caixa.gov.br/sibar/consulta_cobranca_bancaria/boleto"
                   xmlns:sib="http://caixa.gov.br/sibar">
     <soapenv:Header/>
     <soapenv:Body>
-        <ext:SERVICO_SAIDA>
+        <ext:SERVICO_ENTRADA>
             <sib:HEADER>
                 <VERSAO>1.0</VERSAO>
                 <AUTENTICACAO><?= $hash ?></AUTENTICACAO>
@@ -14,12 +14,12 @@
                 <UNIDADE><?= $unidade ?></UNIDADE>
                 <DATA_HORA><?= \Carbon\Carbon::now('America/Sao_Paulo')->format('YmdHis') ?></DATA_HORA>
             </sib:HEADER>
-        </ext:SERVICO_SAIDA>
-        <DADOS>
-            <CONSULTA_BOLETO>
-                <CODIGO_BENEFICIARIO><?= $boleto->getConvenio() ?></CODIGO_BENEFICIARIO>
-                <NOSSO_NUMERO><?= $boleto->getNossoNumero() ?></NOSSO_NUMERO>
-            </CONSULTA_BOLETO>
-        </DADOS>
+            <DADOS>
+                <CONSULTA_BOLETO>
+                    <CODIGO_BENEFICIARIO><?= $boleto->getConvenio() ?></CODIGO_BENEFICIARIO>
+                    <NOSSO_NUMERO><?= $boleto->getNossoNumero() ?></NOSSO_NUMERO>
+                </CONSULTA_BOLETO>
+            </DADOS>
+        </ext:SERVICO_ENTRADA>
     </soapenv:Body>
 </soapenv:Envelope>

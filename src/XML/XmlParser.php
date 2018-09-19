@@ -10,8 +10,8 @@ use SimpleXMLElement;
  * XmlParser
  *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
- * @version 1.0.0
- * @since   18/09/2018
+ * @version 1.1.0
+ * @since   19/09/2018
  * @package Boleto\Caixa\XML
  */
 class XmlParser
@@ -34,19 +34,16 @@ class XmlParser
 
         $parsed = new SimpleXMLElement($clean_xml);
 
-        return $parsed;
+        if ( $parsed->Body->SERVICO_SAIDA->COD_RETORNO == 'X5' ) {
+            throw new Exception($parsed->Body->SERVICO_SAIDA->DADOS->EXCECAO);
+        }
 
-        $dados  = $parsed->Body->SERVICO_SAIDA->DADOS;
+        $dados      = $parsed->Body->SERVICO_SAIDA->DADOS;
+        $retorno    = $dados->CONTROLE_NEGOCIAL->COD_RETORNO;
 
-        $codigoRetorno = $dados->CONTROLE_NEGOCIAL->COD_RETORNO;
-
-        if ( $codigoRetorno == 1 ) {
+        if ( $retorno == 1 ) {
 
             throw new Exception($dados->CONTROLE_NEGOCIAL->MENSAGENS->RETORNO);
-
-        } else if ( $parsed->Body->SERVICO_SAIDA->COD_RETORNO == 'X5' ) {
-
-            throw new Exception($dados->EXCECAO);
 
         } else {
 
