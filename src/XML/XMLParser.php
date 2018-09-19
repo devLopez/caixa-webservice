@@ -2,19 +2,19 @@
 
 namespace Boleto\Caixa\XML;
 
-use Boleto\Caixa\Cobranca;
+use Boleto\Caixa\Retorno\Cobranca;
 use Exception;
 use SimpleXMLElement;
 
 /**
- * XMLParser
+ * XmlParser
  *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
  * @version 1.0.0
  * @since   18/09/2018
  * @package Boleto\Caixa\XML
  */
-class XMLParser
+class XmlParser
 {
     /**
      * @param   string  $xml
@@ -28,10 +28,13 @@ class XMLParser
             'SOAP:',
             'soapenv:',
             'sibar_base:',
-            'manutencaocobrancabancaria:'
+            'manutencaocobrancabancaria:',
+            'consultacobrancabancaria:'
         ], '', $xml);
 
         $parsed = new SimpleXMLElement($clean_xml);
+
+        return $parsed;
 
         $dados  = $parsed->Body->SERVICO_SAIDA->DADOS;
 

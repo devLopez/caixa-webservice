@@ -1,6 +1,6 @@
 <?php
 
-namespace Boleto\Caixa;
+namespace Boleto\Caixa\Retorno;
 
 /**
  * Cobranca

@@ -3,7 +3,7 @@
 namespace Boleto\Caixa;
 
 use Boleto\Caixa\XML\XmlCreator;
-use Boleto\Caixa\XML\XMLParser;
+use Boleto\Caixa\XML\XmlParser;
 use Exception;
 use GuzzleHttp\Client;
 use Boleto\Caixa\Interfaces\BoletoInterface as Boleto;
@@ -49,6 +49,11 @@ class WebService
     protected $sistemaOrigem = 'SIGCB';
 
     /**
+     * @var array
+     */
+    protected $requestData = [];
+
+    /**
      * @param   string|int  $unidade
      * @param   Client  $client
      * @param   Boleto  $boleto
@@ -61,6 +66,7 @@ class WebService
         $this->boleto   = $boleto;
 
         $this->setHashAutenticacao($boleto->geraHashAutenticacao());
+        $this->bootRequestData();
     }
 
     /**
@@ -72,6 +78,20 @@ class WebService
     }
 
     /**
+     * @return  void
+     */
+    protected function bootRequestData()
+    {
+        $this->requestData = [
+            'unidade'           => $this->unidade,
+            'boleto'            => $this->boleto,
+            'usuarioServico'    => $this->usuarioServico,
+            'sistemaOrigem'     => $this->sistemaOrigem,
+            'hash'              => $this->hashAutenticacao,
+        ];
+    }
+
+    /**
      * @return  string
      * @throws  Exception
      */
@@ -79,17 +99,29 @@ class WebService
     {
         $operacao = 'INCLUI_BOLETO';
 
-        $data = [
-            'unidade'           => $this->unidade,
-            'boleto'            => $this->boleto,
-            'pagador'           => $this->boleto->getPagador(),
-            'usuarioServico'    => $this->usuarioServico,
-            'sistemaOrigem'     => $this->sistemaOrigem,
-            'hash'              => $this->hashAutenticacao,
-            'operacao'          => $operacao
-        ];
+        $data = array_merge($this->requestData, [
+            'pagador'   => $this->boleto->getPagador(),
+            'operacao'  => $operacao
+        ]);
 
-        $xml = XmlCreator::create(__DIR__ . '/../resources/incluiBoleto.phtml', $data);
+        $xml = XmlCreator::create(__DIR__ . '/../resources/inclui_boleto.phtml', $data);
+
+        return $this->performRequest($operacao, $xml);
+    }
+
+    /**
+     * @return  string
+     * @throws  Exception
+     */
+    public function consultaBoleto()
+    {
+        $operacao = 'CONSULTA_BOLETO';
+
+        $data = array_merge($this->requestData, [
+            'operacao'  => $operacao
+        ]);
+
+        $xml = XmlCreator::create(__DIR__ . '/../resources/consulta_boleto.phtml', $data);
 
         return $this->performRequest($operacao, $xml);
     }
@@ -102,7 +134,13 @@ class WebService
      */
     private function performRequest($method, $xml)
     {
-        $response = $this->client->post('https://barramento.caixa.gov.br/sibar/ManutencaoCobrancaBancaria/Boleto/Externo', [
+        if ( $method == 'CONSULTA_BOLETO' ) {
+            $url = 'https://barramento.caixa.gov.br/sibar/ConsultaCobrancaBancaria/Boleto';
+        } else {
+            $url = 'https://barramento.caixa.gov.br/sibar/ManutencaoCobrancaBancaria/Boleto/Externo';
+        }
+
+        $response = $this->client->post($url, [
             'body'  => $xml,
             'headers' => [
                 'Content-Type'  => 'text/xml',
@@ -113,7 +151,8 @@ class WebService
             ]
         ]);
 
-        $xml    = $response->getBody()->getContents();
-        return XMLParser::parseFromRetorno($xml);
+        $xml = $response->getBody()->getContents();
+
+        return XmlParser::parseFromRetorno($xml);
     }
 }

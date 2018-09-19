@@ -1,0 +1,25 @@
+<?= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" ?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ext="http://caixa.gov.br/sibar/consulta_cobranca_bancaria/boleto/externo"
+                  xmlns:sib="http://caixa.gov.br/sibar">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ext:SERVICO_SAIDA>
+            <sib:HEADER>
+                <VERSAO>1.0</VERSAO>
+                <AUTENTICACAO><?= $hash ?></AUTENTICACAO>
+                <USUARIO_SERVICO><?= $usuarioServico ?></USUARIO_SERVICO>
+                <OPERACAO><?= $operacao ?></OPERACAO>
+                <SISTEMA_ORIGEM><?= $sistemaOrigem ?></SISTEMA_ORIGEM>
+                <UNIDADE><?= $unidade ?></UNIDADE>
+                <DATA_HORA><?= \Carbon\Carbon::now('America/Sao_Paulo')->format('YmdHis') ?></DATA_HORA>
+            </sib:HEADER>
+        </ext:SERVICO_SAIDA>
+        <DADOS>
+            <CONSULTA_BOLETO>
+                <CODIGO_BENEFICIARIO><?= $boleto->getConvenio() ?></CODIGO_BENEFICIARIO>
+                <NOSSO_NUMERO><?= $boleto->getNossoNumero() ?></NOSSO_NUMERO>
+            </CONSULTA_BOLETO>
+        </DADOS>
+    </soapenv:Body>
+</soapenv:Envelope>
