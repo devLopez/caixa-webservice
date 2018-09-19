@@ -5,6 +5,7 @@ namespace Boleto\Caixa;
 use Boleto\Caixa\Interfaces\BoletoInterface;
 use Carbon\Carbon;
 use Boleto\Caixa\Interfaces\AgenteInterface as Agente;
+use Exception;
 use InvalidArgumentException;
 use JansenFelipe\Utils\Utils;
 
@@ -12,8 +13,8 @@ use JansenFelipe\Utils\Utils;
  * Boleto
  *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
- * @version 1.0.0
- * @since   17/09/2018
+ * @version 1.0.1
+ * @since   19/09/2018
  * @package Boleto\Caixa
  */
 class Boleto implements BoletoInterface
@@ -370,6 +371,7 @@ class Boleto implements BoletoInterface
 
     /**
      * @param   string  $mensagem
+     * @throws  InvalidArgumentException|Exception
      */
     public function setFichaCompensacao($mensagem)
     {
@@ -380,6 +382,10 @@ class Boleto implements BoletoInterface
         } else {
             if ( strlen($mensagem) > 40 ) {
                 throw new InvalidArgumentException('A mensagem deve ter no máximo 40 caracteres');
+            }
+
+            if ( count($this->fichaCompensacao) > 2 ) {
+                throw new Exception('São permitidas apenas 2 mensagens para este campo');
             }
 
             array_push($this->fichaCompensacao, $mensagem);
@@ -396,6 +402,7 @@ class Boleto implements BoletoInterface
 
     /**
      * @param   string  $mensagem
+     * @throws  InvalidArgumentException|Exception
      */
     public function setReciboPagador($mensagem)
     {
@@ -406,6 +413,10 @@ class Boleto implements BoletoInterface
         } else {
             if ( strlen($mensagem) > 40 ) {
                 throw new InvalidArgumentException('A mensagem deve ter no máximo 40 caracteres');
+            }
+
+            if ( count($this->reciboPagador) > 4 ) {
+                throw new Exception('São permitidas apenas 4 mensagens para este campo');
             }
 
             array_push($this->reciboPagador, $mensagem);
