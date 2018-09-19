@@ -6,10 +6,12 @@
         }
     },
     "require": {
-        "ext-curl": ">=5.4",
+        "php": ">=5.5",
+        "ext-curl": ">=5.5",
+        "ext-simplexml": ">=5.5",
         "guzzlehttp/guzzle": "^6.0",
         "jansenfelipe/utils": "^2.0",
-        "phpunit/phpunit": "^7.3",
-        "nesbot/carbon": "^2.1"
+        "phpunit/phpunit": "5.*",
+        "nesbot/carbon": "1.17"
     }
 }

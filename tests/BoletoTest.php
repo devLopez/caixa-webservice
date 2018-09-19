@@ -4,9 +4,8 @@ use Boleto\Caixa\Agente;
 use Boleto\Caixa\Boleto;
 use Boleto\Caixa\Interfaces\BoletoInterface;
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
 
-class BoletoTest extends TestCase
+class BoletoTest extends PHPUnit_Framework_TestCase
 {
     public function testBoleto()
     {

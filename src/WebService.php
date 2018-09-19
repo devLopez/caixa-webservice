@@ -122,6 +122,8 @@ class WebService
 
         $xml = XmlCreator::create(__DIR__ . '/../resources/consulta_boleto.phtml', $data);
 
+        return $xml;
+
         return $this->performRequest($operacao, $xml);
     }
 

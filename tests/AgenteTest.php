@@ -2,9 +2,8 @@
 
 use Boleto\Caixa\Agente;
 use Boleto\Caixa\Interfaces\AgenteInterface;
-use PHPUnit\Framework\TestCase;
 
-class AgenteTest extends TestCase
+class AgenteTest extends PHPUnit_Framework_TestCase
 {
     public function testInstance()
     {

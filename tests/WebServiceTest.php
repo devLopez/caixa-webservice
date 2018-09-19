@@ -5,9 +5,8 @@ use Boleto\Caixa\Boleto;
 use Boleto\Caixa\Retorno\Cobranca;
 use Boleto\Caixa\WebService;
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
 
-class WebServiceTest extends TestCase
+class WebServiceTest extends PHPUnit_Framework_TestCase
 {
     public function testInclusaoBoleto()
     {
