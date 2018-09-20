@@ -385,9 +385,9 @@ class Boleto implements BoletoInterface
                 throw new Exception('São permitidas apenas 2 mensagens para a ficha de compensação');
             }
 
-            $mensagem = truncate($mensagem, 37);
+            $mensagem = truncate(strtoupper(Utils::unaccents($mensagem)), 37);
 
-            array_push($this->fichaCompensacao, strtoupper(Utils::unaccents($mensagem)));
+            array_push($this->fichaCompensacao, $mensagem);
         }
     }
 
@@ -415,9 +415,9 @@ class Boleto implements BoletoInterface
                 throw new Exception('São permitidas apenas 4 mensagens para o recibo do pagador');
             }
 
-            $mensagem = truncate($mensagem, 37);
+            $mensagem = truncate(strtoupper(Utils::unaccents($mensagem)), 37);
 
-            array_push($this->reciboPagador, strtoupper(Utils::unaccents($mensagem)));
+            array_push($this->reciboPagador, $mensagem);
         }
     }
 
