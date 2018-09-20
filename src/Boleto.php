@@ -13,7 +13,7 @@ use JansenFelipe\Utils\Utils;
  * Boleto
  *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
- * @version 1.0.3
+ * @version 1.1.0
  * @since   20/09/2018
  * @package Boleto\Caixa
  */
@@ -388,7 +388,7 @@ class Boleto implements BoletoInterface
                 throw new Exception('São permitidas apenas 2 mensagens para este campo');
             }
 
-            array_push($this->fichaCompensacao, $mensagem);
+            array_push($this->fichaCompensacao, strtoupper(Utils::unaccents($mensagem)));
         }
     }
 
@@ -419,7 +419,7 @@ class Boleto implements BoletoInterface
                 throw new Exception('São permitidas apenas 4 mensagens para este campo');
             }
 
-            array_push($this->reciboPagador, $mensagem);
+            array_push($this->reciboPagador, strtoupper(Utils::unaccents($mensagem)));
         }
     }
 
