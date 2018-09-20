@@ -4,7 +4,7 @@ namespace Boleto\Caixa;
 
 use Boleto\Caixa\Interfaces\BoletoInterface;
 use Carbon\Carbon;
-use Boleto\Caixa\Interfaces\AgenteInterface as Agente;
+use Boleto\Caixa\Interfaces\AgenteInterface;
 use Exception;
 use InvalidArgumentException;
 use JansenFelipe\Utils\Utils;
@@ -13,8 +13,8 @@ use JansenFelipe\Utils\Utils;
  * Boleto
  *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
- * @version 1.0.1
- * @since   19/09/2018
+ * @version 1.0.2
+ * @since   20/09/2018
  * @package Boleto\Caixa
  */
 class Boleto implements BoletoInterface
@@ -112,10 +112,10 @@ class Boleto implements BoletoInterface
     /**
      * @param   string  $convenio
      * @param   string  $cnpjBeneficiario
-     * @param   Agente|null  $pagador
+     * @param   AgenteInterface|null  $pagador
      * @param   array  $opcoes
      */
-    public function __construct($convenio, $cnpjBeneficiario, Agente $pagador = null, array $opcoes = [])
+    public function __construct($convenio, $cnpjBeneficiario, AgenteInterface $pagador = null, array $opcoes = [])
     {
         $this->setConvenio($convenio);
         $this->setCNPJBeneficiario($cnpjBeneficiario);
@@ -194,9 +194,9 @@ class Boleto implements BoletoInterface
     }
 
     /**
-     * @param   Agente  $pagador
+     * @param   AgenteInterface  $pagador
      */
-    public function setPagador(Agente $pagador)
+    public function setPagador(AgenteInterface $pagador)
     {
         $this->pagador = $pagador;
     }
