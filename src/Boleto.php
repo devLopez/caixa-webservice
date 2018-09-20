@@ -13,7 +13,7 @@ use JansenFelipe\Utils\Utils;
  * Boleto
  *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
- * @version 1.0.2
+ * @version 1.0.3
  * @since   20/09/2018
  * @package Boleto\Caixa
  */
@@ -381,7 +381,7 @@ class Boleto implements BoletoInterface
             }
         } else {
             if ( strlen($mensagem) > 40 ) {
-                throw new InvalidArgumentException('A mensagem deve ter no máximo 40 caracteres');
+                throw new InvalidArgumentException('A mensagem da ficha de compensação deve ter no máximo 40 caracteres');
             }
 
             if ( count($this->fichaCompensacao) > 2 ) {
@@ -412,7 +412,7 @@ class Boleto implements BoletoInterface
             }
         } else {
             if ( strlen($mensagem) > 40 ) {
-                throw new InvalidArgumentException('A mensagem deve ter no máximo 40 caracteres');
+                throw new InvalidArgumentException('A mensagem do recibo do pagador deve ter no máximo 40 caracteres');
             }
 
             if ( count($this->reciboPagador) > 4 ) {
