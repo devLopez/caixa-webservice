@@ -6,14 +6,14 @@ use Boleto\Caixa\XML\XmlCreator;
 use Boleto\Caixa\XML\XmlParser;
 use Exception;
 use GuzzleHttp\Client;
-use Boleto\Caixa\Interfaces\BoletoInterface as Boleto;
+use Boleto\Caixa\Interfaces\BoletoInterface;
 
 /**
  * WebService
  *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
- * @version 1.1.0
- * @since   19/09/2018
+ * @version 1.1.1
+ * @since   20/09/2018
  * @package Boleto\Caixa
  */
 class WebService
@@ -55,9 +55,9 @@ class WebService
 
     /**
      * @param   string|int  $unidade
-     * @param   Boleto  $boleto
+     * @param   BoletoInterface  $boleto
      */
-    public function __construct($unidade, Boleto $boleto)
+    public function __construct($unidade, BoletoInterface $boleto)
     {
         $this->unidade  = $unidade;
 
