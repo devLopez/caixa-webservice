@@ -33,7 +33,7 @@ class BoletoTest extends PHPUnit_Framework_TestCase
             'aposVencimento'        => \Boleto\Caixa\Constants\PosVencimento::DEVOLVER,
             'diasAposVencimento'    => 999,
             'fichaCompensacao'      => ['NAO RECEBER APOS O VENCIMENTO'],
-            'reciboPagador'         => ['NAO RECEBER APOS O VENCIMENTO']
+            'reciboPagador'         => ['NAO RECEBER APOS O VENCIMENTO', 'Uma mensagem um pouco mais longa para que possamos testar o método truncate']
         ];
 
         $agente = new Agente('Matheus Lopes Santos', '12345678909');
@@ -49,5 +49,8 @@ class BoletoTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($data['diasAposVencimento'], $boleto->getDiasAposVencimento());
         $this->assertInternalType('array', $boleto->getFichaCompensacao());
         $this->assertInternalType('array', $boleto->getReciboPagador());
+
+        $this->assertEquals($data['fichaCompensacao'][0], $boleto->getFichaCompensacao()[0]);
+        $this->assertEquals('UMA MENSAGEM UM POUCO MAIS LONGA PARA...', $boleto->getReciboPagador()[1]);
     }
 }

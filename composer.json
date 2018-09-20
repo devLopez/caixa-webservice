@@ -3,7 +3,10 @@
     "autoload": {
         "psr-4": {
             "Boleto\\Caixa\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "require": {
         "php": ">=5.5",

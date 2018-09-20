@@ -13,7 +13,7 @@ use JansenFelipe\Utils\Utils;
  * Boleto
  *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
- * @version 1.1.0
+ * @version 1.2.0
  * @since   20/09/2018
  * @package Boleto\Caixa
  */
@@ -380,13 +380,12 @@ class Boleto implements BoletoInterface
                 $this->setFichaCompensacao($item);
             }
         } else {
-            if ( strlen($mensagem) > 40 ) {
-                throw new InvalidArgumentException('A mensagem da ficha de compensação deve ter no máximo 40 caracteres');
-            }
 
             if ( count($this->fichaCompensacao) > 2 ) {
-                throw new Exception('São permitidas apenas 2 mensagens para este campo');
+                throw new Exception('São permitidas apenas 2 mensagens para a ficha de compensação');
             }
+
+            $mensagem = truncate($mensagem, 37);
 
             array_push($this->fichaCompensacao, strtoupper(Utils::unaccents($mensagem)));
         }
@@ -411,13 +410,12 @@ class Boleto implements BoletoInterface
                 $this->setReciboPagador($item);
             }
         } else {
-            if ( strlen($mensagem) > 40 ) {
-                throw new InvalidArgumentException('A mensagem do recibo do pagador deve ter no máximo 40 caracteres');
-            }
 
             if ( count($this->reciboPagador) > 4 ) {
-                throw new Exception('São permitidas apenas 4 mensagens para este campo');
+                throw new Exception('São permitidas apenas 4 mensagens para o recibo do pagador');
             }
+
+            $mensagem = truncate($mensagem, 37);
 
             array_push($this->reciboPagador, strtoupper(Utils::unaccents($mensagem)));
         }
